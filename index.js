@@ -32,11 +32,15 @@ async function run() {
       const sort = req.query.sort;
       const category = req.query.category;
 
-      console.log(category);
+      console.log(search);
 
       const query = {
         category: {
           $regex: category,
+          $options: "i",
+        },
+        product_name: {
+          $regex: search,
           $options: "i",
         },
       };
