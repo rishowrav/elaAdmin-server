@@ -29,7 +29,17 @@ async function run() {
     const allProducts = client.db("elaAdmin").collection("products");
 
     app.get("/products", async (req, res) => {
-      const products = await allProducts.find().toArray();
+      const sort = req.query.sort;
+
+      const query = {};
+
+      const option = {
+        sort: {
+          price: sort == "asc" ? 1 : -1,
+        },
+      };
+
+      const products = await allProducts.find(query, option).toArray();
       res.send(products);
     });
 
