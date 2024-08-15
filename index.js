@@ -31,13 +31,11 @@ async function run() {
     app.get("/products", async (req, res) => {
       const sort = req.query.sort;
       const category = req.query.category;
-
-      console.log(search);
+      const search = req.query.search;
 
       const query = {
         category: {
           $regex: category,
-          $options: "i",
         },
         product_name: {
           $regex: search,
