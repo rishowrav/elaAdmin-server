@@ -30,8 +30,16 @@ async function run() {
 
     app.get("/products", async (req, res) => {
       const sort = req.query.sort;
+      const category = req.query.category;
 
-      const query = {};
+      console.log(category);
+
+      const query = {
+        category: {
+          $regex: category,
+          $options: "i",
+        },
+      };
 
       const option = {
         sort: {
