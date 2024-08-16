@@ -32,6 +32,12 @@ async function run() {
       const sort = req.query.sort;
       const category = req.query.category;
       const search = req.query.search;
+      const size = +req.query.size;
+      const currentPage = +req.query.currentPage
+        ? +req.query.currentPage - 1
+        : +req.query.currentPage;
+
+      console.log({ size, currentPage });
 
       const query = {
         category: {
@@ -49,12 +55,33 @@ async function run() {
         },
       };
 
-      const products = await allProducts.find(query, option).toArray();
+      const products = await allProducts
+        .find(query, option)
+        .skip(size * currentPage)
+        .limit(size)
+        .toArray();
       res.send(products);
     });
 
+    // app.get("/products-count", async (req, res) => {
+    //   try {
+    //     const result = await allProducts.countDocuments({});
+    //     res.send({ count: result });
+    //   } catch (error) {
+    //     res
+    //       .status(500)
+    //       .send({ error: "An error occurred while counting the products." });
+    //   }
+    // });
+
+    // count products length
+    app.get("/products-count", async (req, res) => {
+      const productLength = await allProducts.countDocuments();
+      res.send({ productLength });
+    });
+
     // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
