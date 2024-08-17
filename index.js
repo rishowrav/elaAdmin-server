@@ -39,15 +39,18 @@ async function run() {
 
       console.log({ size, currentPage });
 
-      const query = {
-        category: {
-          $regex: category,
-        },
-        product_name: {
-          $regex: search,
-          $options: "i",
-        },
-      };
+      let query = {};
+      if (category || search) {
+        query = {
+          category: {
+            $regex: category,
+          },
+          product_name: {
+            $regex: search,
+            $options: "i",
+          },
+        };
+      }
 
       const option = {
         sort: {
@@ -76,7 +79,10 @@ async function run() {
 
     // count products length
     app.get("/products-count", async (req, res) => {
-      const productLength = await allProducts.countDocuments();
+      const category = req.query.category;
+      let query = {};
+      if (category) query = { category };
+      const productLength = await allProducts.countDocuments(query);
       res.send({ productLength });
     });
 
