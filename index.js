@@ -6,7 +6,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // middle ware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://elaadmin.netlify.app"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 // middleware end
 
@@ -29,6 +34,7 @@ async function run() {
     // await client.connect();
     const allProducts = client.db("elaAdmin").collection("products");
 
+    // Products API
     app.get("/products", async (req, res) => {
       const sort = req.query.sort;
       const category = req.query.category;
@@ -65,18 +71,7 @@ async function run() {
       res.send(products);
     });
 
-    // app.get("/products-count", async (req, res) => {
-    //   try {
-    //     const result = await allProducts.countDocuments({});
-    //     res.send({ count: result });
-    //   } catch (error) {
-    //     res
-    //       .status(500)
-    //       .send({ error: "An error occurred while counting the products." });
-    //   }
-    // });
-
-    // count products length
+    // count products length API
     app.get("/products-count", async (req, res) => {
       const category = req.query.category;
       const search = req.query.search;
@@ -98,7 +93,7 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
