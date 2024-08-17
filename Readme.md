@@ -19,6 +19,7 @@ Server Code Repository: https://github.com/rishowrav/elaAdmin-server
 ### Installation
 
 ```ternimal
+$ npm install
 $ npm nodemon index
 $ npm run dev
 ```
