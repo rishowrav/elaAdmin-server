@@ -15,3 +15,10 @@ Server Code Repository: https://github.com/rishowrav/elaAdmin-server
 - Reset Button
 - Categorize functionality
 - Pagination
+
+### Installation
+
+```ternimal
+$ npm nodemon index
+$ npm run dev
+```
